@@ -22,12 +22,19 @@ def send():
     return {"status": 200}
 
 
+@app.route("/analytics", methods=["GET"])
+def analytics():
+    with open('store.txt', 'r') as file:
+        return {sum(1 for line in file)}
+    
+
+
 @app.route("/get/<id>", methods=["GET"])
 def get(id):
     id = int(id)
-    data = linecache.getline("store.txt", id)
+    data = linecache.getline("store.txt", id):
     return {"content": data}
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5080)
+    app.run(debug=True, port=5080, host="0.0.0.0")
