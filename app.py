@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import linecache
-import random
 
 app = Flask(__name__)
 
@@ -14,14 +13,19 @@ def index():
 def send():
     data = request.get_json()
     print(jsonify({"received": data}))
-    with open("file.txt", "a") as file:
-        file.write(str(data)+str(random.random())+"\n")
+    with open("store.txt", "a") as file:
+        if data["vector"]:
+            vector = data["vector"]
+        else:
+            return {"status": 201}
+        file.write(str(vector)+"\n")
     return {"status": 200}
+
 
 @app.route("/get/<id>", methods=["GET"])
 def get(id):
     id = int(id)
-    data = linecache.getline("file.txt", id)
+    data = linecache.getline("store.txt", id)
     return {"content": data}
 
 
